@@ -1,0 +1,7 @@
+{:tasks {
+  sql-gen (shell "sqlc generate")
+  add-migration (let [[name] *command-line-args*
+                      cmd (str "goose -s create " name " sql")]
+                  (println cmd)
+                  (apply shell cmd ))
+ }}

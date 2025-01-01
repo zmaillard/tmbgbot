@@ -1,0 +1,9 @@
+version: "2"
+sql:
+  - schema: "db/sql/migrations"
+    queries: "db/sql/queries"
+    engine: "sqlite"
+    gen:
+      go:
+        out: "dbstore"
+        emit_interface: true

@@ -1,0 +1,5 @@
+.clj-kondo/
+.lsp/
+.idea/
+*.sqlite
+.envrc
