@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"database/sql"
+	"fmt"
 	"github.com/bluesky-social/indigo/api/atproto"
 	"github.com/bluesky-social/indigo/api/bsky"
 	lexutil "github.com/bluesky-social/indigo/lex/util"
@@ -80,7 +81,7 @@ func notificationScheduler(ctx context.Context, cfg *Config, database dbstore.Qu
 	}
 }
 
-func sendSongNotification(ctx context.Context, cfg *Config, song dbstore.Song) error {
+func sendSongNotification(ctx context.Context, cfg *Config, song fmt.Stringer) error {
 	post := &bsky.FeedPost{
 		Text:      song.String(),
 		CreatedAt: time.Now().Local().Format(time.RFC3339),
