@@ -2,6 +2,8 @@ name: Deploy Site To Github Pages
 
 on:
   push:
+    paths:
+      - 'web/**'
     branches:
       - main
 
