@@ -1,5 +1,11 @@
 package dbstore
 
-func (s Song) String() string {
-	return s.Title
+import "fmt"
+
+type SongFormatter interface {
+	Format() string
+}
+
+func (s GetRandomSongRow) Format() string {
+	return fmt.Sprintf("%s - %s", s.Song, s.Album)
 }

@@ -1,2 +1,4 @@
 -- name: GetRandomSong :one
-SELECT * FROM song ORDER BY RANDOM() LIMIT 1;
+SELECT s.title as song, a.title as album FROM song s
+         INNER JOIN main.album a on a.id = s.album_id
+    ORDER BY RANDOM() LIMIT 1;
