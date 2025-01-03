@@ -9,7 +9,7 @@ import (
 )
 
 type Querier interface {
-	GetRandomSong(ctx context.Context) (Song, error)
+	GetRandomSong(ctx context.Context) (GetRandomSongRow, error)
 }
 
 var _ Querier = (*Queries)(nil)

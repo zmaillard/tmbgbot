@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"database/sql"
-	"fmt"
 	"github.com/bluesky-social/indigo/api/atproto"
 	"github.com/bluesky-social/indigo/api/bsky"
 	lexutil "github.com/bluesky-social/indigo/lex/util"
@@ -35,7 +34,7 @@ func main() {
 
 	query := dbstore.New(database)
 
-	ticker := time.NewTicker(1 * time.Minute)
+	ticker := time.NewTicker(24 * time.Hour)
 
 	go notificationScheduler(ctx, cfg, query, ticker)
 
@@ -81,9 +80,9 @@ func notificationScheduler(ctx context.Context, cfg *Config, database dbstore.Qu
 	}
 }
 
-func sendSongNotification(ctx context.Context, cfg *Config, song fmt.Stringer) error {
+func sendSongNotification(ctx context.Context, cfg *Config, song dbstore.SongFormatter) error {
 	post := &bsky.FeedPost{
-		Text:      song.String(),
+		Text:      song.Format(),
 		CreatedAt: time.Now().Local().Format(time.RFC3339),
 	}
 
