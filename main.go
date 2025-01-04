@@ -9,6 +9,7 @@ import (
 	"github.com/bluesky-social/indigo/util/cliutil"
 	"github.com/bluesky-social/indigo/xrpc"
 	"github.com/kelseyhightower/envconfig"
+	"log/slog"
 	_ "modernc.org/sqlite"
 	"os"
 	"os/signal"
@@ -18,6 +19,8 @@ import (
 )
 
 func main() {
+	logger := slog.New(slog.NewTextHandler(os.Stdout, nil))
+	logger.Info("Starting TMBGBot")
 	ctx := context.Background()
 	ctx, cancel := signal.NotifyContext(ctx, os.Interrupt)
 	defer cancel()
@@ -41,6 +44,7 @@ func main() {
 	var wg sync.WaitGroup
 	wg.Add(1)
 	go func() {
+		logger.Info("Waiting for shutdown signal")
 		defer wg.Done()
 		<-ctx.Done()
 

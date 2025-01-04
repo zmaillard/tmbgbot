@@ -30,6 +30,11 @@ jobs:
       - name: Setup GitHub Pages
         id: pages
         uses: actions/configure-pages@v5
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '^23.1.0'
+      - run: npm install
+      - run: npm run tailwind:build
       - name: Upload Artifact
         uses: actions/upload-pages-artifact@v3
         with:
