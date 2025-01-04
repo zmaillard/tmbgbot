@@ -7,5 +7,5 @@ type SongFormatter interface {
 }
 
 func (s GetRandomSongRow) Format() string {
-	return fmt.Sprintf("%s - %s", s.Song, s.Album)
+	return fmt.Sprintf("%s - %s (%v)", s.Song, s.Album, s.Year)
 }

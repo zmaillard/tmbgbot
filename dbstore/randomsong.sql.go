@@ -10,7 +10,7 @@ import (
 )
 
 const getRandomSong = `-- name: GetRandomSong :one
-SELECT s.title as song, a.title as album FROM song s
+SELECT s.title as song, a.title as album, a.year FROM song s
          INNER JOIN main.album a on a.id = s.album_id
     ORDER BY RANDOM() LIMIT 1
 `
@@ -18,11 +18,12 @@ SELECT s.title as song, a.title as album FROM song s
 type GetRandomSongRow struct {
 	Song  string
 	Album string
+	Year  float64
 }
 
 func (q *Queries) GetRandomSong(ctx context.Context) (GetRandomSongRow, error) {
 	row := q.db.QueryRowContext(ctx, getRandomSong)
 	var i GetRandomSongRow
-	err := row.Scan(&i.Song, &i.Album)
+	err := row.Scan(&i.Song, &i.Album, &i.Year)
 	return i, err
 }

@@ -1,7 +1,4 @@
 {:tasks {
   sql-gen (shell "sqlc generate")
-  add-migration (let [[name] *command-line-args*
-                      cmd (str "goose -s create " name " sql")]
-                  (println cmd)
-                  (apply shell cmd ))
+  web (shell "python3 -m http.server 8899 --directory ./web")
  }}

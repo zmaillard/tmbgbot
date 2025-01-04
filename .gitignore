@@ -3,3 +3,5 @@
 .idea/
 *.sqlite
 .envrc
+node_modules/
+web/css/index.css
