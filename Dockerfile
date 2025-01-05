@@ -16,8 +16,8 @@ COPY dbstore/ ./dbstore
 
 ENV CGO_ENABLED=0
 
-RUN GOARCH="$(xcputranslate translate -field arch -targetplatform ${TARGETPLATFORM})" \
-    GOARM="$(xcputranslate translate -field arm -targetplatform ${TARGETPLATFORM})" \
+RUN GOARCH="$(./xcputranslate translate -field arch -targetplatform ${TARGETPLATFORM})" \
+    GOARM="$(./xcputranslate translate -field arm -targetplatform ${TARGETPLATFORM})" \
     go build -o /tmbgbot
 
 FROM gcr.io/distroless/base-debian11 AS app
