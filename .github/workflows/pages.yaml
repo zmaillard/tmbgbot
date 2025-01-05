@@ -40,7 +40,7 @@ jobs:
       - run: npm run tailwind:build
       - name: Get current date
         id: date
-        run: echo "::set-output name=date::$(date +'%d-%m-%Y')"
+        run: echo "::set-output name=date::$(date +'%m-%d-%Y')"
       - name: Build Configuration File
         run: jq -n env > config.json
         env:
