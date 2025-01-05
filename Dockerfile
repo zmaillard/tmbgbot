@@ -3,7 +3,9 @@ ARG BUILDPLATFORM=linux/amd64
 FROM --platform=${BUILDPLATFORM} qmcgaw/xcputranslate:${XCPUTRANSLATE_VERSION} AS xcputranslate
 FROM --platform=${BUILDPLATFORM}  golang:1.23 AS builder
 
+
 WORKDIR /app
+COPY --from=xcputranslate /xcputranslate xcputranslate
 ARG TARGETPLATFORM
 
 COPY go.mod go.sum ./
