@@ -4,5 +4,4 @@ bb.edn
 .clj-kondo/
 .lsp/
 .idea/
-*.sqlite
 .github/
