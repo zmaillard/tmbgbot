@@ -47,7 +47,7 @@ jobs:
           TMBGBOT_LASTUPDATED: ${{ steps.date.outputs.date }}
           TMBGBOT_VERSION: ${{ steps.get-latest-tag.outputs.tag }}
           TMBGBOT_COMMIT: ${{ github.sha }}
-      - run: ejs web/src/config.ejs -f config.json -o web/src/config.js
+      - run:  node_modules/.bin/ejs web/src/config.ejs -f config.json -o web/src/config.js
       - name: Upload Artifact
         uses: actions/upload-pages-artifact@v3
         with:
