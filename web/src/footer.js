@@ -13,8 +13,10 @@ class CommonFooter extends HTMLElement {
                 <a href="#" class="hover:underline me-4 md:me-6">About</a>
             </li>
             <li>
-                <a href="http://github.com/zmaillard/tmbgodt/releases/tag/v1.0.4" class="hover:underline me-4 md:me-6">v1.0.4</a>
+                <a href="http://github.com/zmaillard/tmbgbot/releases/tag/${window.config.version}" class="hover:underline me-4 md:me-6">${window.config.version}</a>
             </li>
+            <li>
+                <a href="https://github.com/zmaillard/tmbgbot/commit/${window.config.commit}">Updated ${window.config.lastUpdated}</a></li>
         </ul>
     </div>
 </footer>

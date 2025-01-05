@@ -28,6 +28,8 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - uses: actions-ecosystem/action-get-latest-tag@v1
+        id: get-latest-tag
       - name: Setup GitHub Pages
         id: pages
         uses: actions/configure-pages@v5
@@ -36,6 +38,16 @@ jobs:
           node-version: '^23.1.0'
       - run: npm install
       - run: npm run tailwind:build
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=date::$(date +'%d-%m-%Y')"
+      - name: Build Configuration File
+        run: jq -n env > config.json
+        env:
+          TMBGBOT_LASTUPDATED: ${{ steps.date.outputs.date }}
+          TMBGBOT_VERSION: ${{ steps.get-latest-tag.outputs.tag }}
+          TMBGBOT_COMMIT: ${{ github.sha }}
+      - run: ejs web/src/config.ejs -f config.json -o web/src/config.js
       - name: Upload Artifact
         uses: actions/upload-pages-artifact@v3
         with:
