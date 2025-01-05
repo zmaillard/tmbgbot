@@ -1,15 +1,3 @@
-FROM golang:1.23 AS db-builder
-
-# Install Goose
-RUN go install github.com/pressly/goose/v3/cmd/goose@latest
-
-WORKDIR /app
-
-# Build Database
-COPY db/ ./db
-
-RUN GOOSE_DRIVER=sqlite3 GOOSE_DBSTRING=./tmbg.db goose -dir ./db/sql/migrations up
-
 FROM golang:1.23 AS builder
 
 WORKDIR /app
@@ -25,7 +13,7 @@ FROM gcr.io/distroless/base-debian11 AS app
 
 WORKDIR /
 COPY --from=builder /tmbgbot /tmbgbot
-COPY --from=db-builder /app/tmbg.db /tmbg.db
+COPY tmbg.db /tmbg.db
 
 USER nonroot:nonroot
 

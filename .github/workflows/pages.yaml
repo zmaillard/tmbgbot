@@ -1,6 +1,7 @@
 name: Deploy Site To Github Pages
 
 on:
+  workflow_dispatch:
   push:
     paths:
       - 'web/**'
