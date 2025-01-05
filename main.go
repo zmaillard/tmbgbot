@@ -25,6 +25,8 @@ func main() {
 	ctx, cancel := signal.NotifyContext(ctx, os.Interrupt)
 	defer cancel()
 
+	ctx = WithLogger(ctx, logger)
+
 	cfg, err := LoadConfig()
 	if err != nil {
 		panic(err)
@@ -74,17 +76,26 @@ func NewDatabase(config *Config) (*sql.DB, error) {
 }
 
 func notificationScheduler(ctx context.Context, cfg *Config, database dbstore.Querier, ticker *time.Ticker) {
+	logger := FromContext(ctx)
 	for _ = range ticker.C {
 		song, err := database.GetRandomSong(ctx)
 
-		if err == nil {
-			// Send notification
-			err = sendSongNotification(ctx, cfg, song)
+		if err != nil {
+			logger.Error("Error Loading Song")
+			continue
+		}
+		// Send notification
+		logger.Info("Loaded song", "song", song.Format())
+		err = sendSongNotification(ctx, cfg, song)
+		if err != nil {
+			logger.Error("Error Posting To Bluesky", "error", err)
 		}
 	}
 }
 
 func sendSongNotification(ctx context.Context, cfg *Config, song dbstore.SongFormatter) error {
+	logger := FromContext(ctx)
+
 	post := &bsky.FeedPost{
 		Text:      song.Format(),
 		CreatedAt: time.Now().Local().Format(time.RFC3339),
@@ -101,6 +112,7 @@ func sendSongNotification(ctx context.Context, cfg *Config, song dbstore.SongFor
 	})
 
 	if err != nil {
+		logger.Error("Error Authenticating To Bluesky", "error", err)
 		return err
 	}
 	xrpcc.Auth.Did = auth.Did
@@ -116,4 +128,16 @@ func sendSongNotification(ctx context.Context, cfg *Config, song dbstore.SongFor
 	})
 
 	return err
+}
+
+func WithLogger(ctx context.Context, logger *slog.Logger) context.Context {
+	return context.WithValue(ctx, "logger", logger)
+}
+
+func FromContext(ctx context.Context) *slog.Logger {
+	if logger, ok := ctx.Value("logger").(*slog.Logger); ok {
+		return logger
+	}
+	// Hopefully this never happens
+	return slog.New(slog.NewTextHandler(os.Stdout, nil))
 }
