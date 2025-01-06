@@ -10,7 +10,10 @@ class CommonFooter extends HTMLElement {
                 <a href="/" class="hover:underline me-4 md:me-6">Home</a>
             </li>
             <li>
-                <a href="#" class="hover:underline me-4 md:me-6">About</a>
+                <a href="/about.html" class="hover:underline me-4 md:me-6">About</a>
+            </li>
+            <li>
+                <a href="https://bsky.app/profile/tmbgodt.sagebrushgis.com" class="hover:underline me-4 md:me-6">Bluesky Bot</a>
             </li>
             <li>
                 <a href="http://github.com/zmaillard/tmbgbot/releases/tag/${window.config.version}" class="hover:underline me-4 md:me-6">${window.config.version}</a>
