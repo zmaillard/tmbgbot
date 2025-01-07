@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"database/sql"
+	"fmt"
 	"github.com/bluesky-social/indigo/api/atproto"
 	"github.com/bluesky-social/indigo/api/bsky"
 	lexutil "github.com/bluesky-social/indigo/lex/util"
@@ -96,9 +97,30 @@ func notificationScheduler(ctx context.Context, cfg *Config, database dbstore.Qu
 func sendSongNotification(ctx context.Context, cfg *Config, song dbstore.SongFormatter) error {
 	logger := FromContext(ctx)
 
+	songText := song.Format()
+	tagText := "tmbg"
+	start := int64(len(songText) + 2) // +2 for the space and first letter of word
+	postText := fmt.Sprintf("%s #%s", songText, tagText)
+	end := int64(len(postText))
+
 	post := &bsky.FeedPost{
-		Text:      song.Format(),
+		Text:      postText,
 		CreatedAt: time.Now().Local().Format(time.RFC3339),
+		Facets: []*bsky.RichtextFacet{
+			{
+				Features: []*bsky.RichtextFacet_Features_Elem{
+					{
+						RichtextFacet_Tag: &bsky.RichtextFacet_Tag{
+							Tag: tagText,
+						},
+					},
+				},
+				Index: &bsky.RichtextFacet_ByteSlice{
+					ByteStart: start,
+					ByteEnd:   end,
+				},
+			},
+		},
 	}
 
 	xrpcc := &xrpc.Client{Client: cliutil.NewHttpClient(),
